@@ -43,7 +43,7 @@ def main():
 
             received_message = json.loads(msg.value().decode('utf-8'))
             logging.info(f'{[datetime.datetime.now()]} Received message: {received_message}')
-            '''
+            
             try:
                 smtp_server = create_smtp_server_and_login(received_message['sender'], received_message['app_password'].replace(' ', ' '))
             except Exception as e:
@@ -53,7 +53,6 @@ def main():
                 send_email(smtp_server, received_message['sender'], received_message['contact'], received_message['message'])
             except Exception as e:
                 logging.error(f'{[datetime.datetime.now()]} Error sending email: {e}')
-            '''
             consumer.commit(asynchronous=False)
 
     finally:
