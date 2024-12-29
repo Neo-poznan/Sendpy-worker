@@ -60,8 +60,8 @@ def main():
 
             received_message = json.loads(msg.value().decode('utf-8'))
             logging.info(f'{[datetime.datetime.now()]} Received message: {received_message}')    
-            smtp_server = create_smtp_server_and_login(received_message['sender'], received_message['app_password'])
-            send_email(smtp_server, received_message['sender'], received_message['contact'], received_message['message'])
+            smtp_server = create_smtp_server_and_login(received_message['sender'], received_message['app_password'], received_message['server_host'], received_message['server_port'])
+            send_email(smtp_server, received_message['sender'], received_message['contact'], received_message['message'], received_message['header'])
             consumer.commit(asynchronous=False)
     finally:
         consumer.close()
