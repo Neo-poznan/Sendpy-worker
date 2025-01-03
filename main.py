@@ -4,14 +4,10 @@ import datetime
 
 from confluent_kafka import Consumer, KafkaError, TopicPartition
 
-from smtp import create_smtp_server_and_login, send_email
+from smtp import connect_to_smtp_server_and_login, send_email
+from config import KAFKA_HOST_AND_PORT, TOPIC, PARTITION
 
 logging.basicConfig(level=logging.INFO, filename='log.log', filemode='w')
-
-
-KAFKA_HOST_AND_PORT = 'localhost:9092'
-TOPIC = 'sendpy-topic'
-PARTITION = 0
 
 
 def create_consumer() -> Consumer:
@@ -60,7 +56,7 @@ def main():
 
             received_message = json.loads(msg.value().decode('utf-8'))
             logging.info(f'{[datetime.datetime.now()]} Received message: {received_message}')    
-            smtp_server = create_smtp_server_and_login(received_message['sender'], received_message['app_password'], received_message['server_host'], received_message['server_port'])
+            smtp_server = connect_to_smtp_server_and_login(received_message['sender'], received_message['app_password'], received_message['server_host'], received_message['server_port'])
             send_email(smtp_server, received_message['sender'], received_message['contact'], received_message['message'], received_message['header'])
             consumer.commit(asynchronous=False)
     finally:

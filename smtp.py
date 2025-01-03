@@ -7,9 +7,9 @@ from email.mime.text import MIMEText
 logging.basicConfig(level=logging.INFO, filename='log.log', filemode='w')
 
 
-def create_smtp_server_and_login(sender_email: str, app_password: str, server_host:str, server_port:str) -> smtplib.SMTP:
+def connect_to_smtp_server_and_login(sender_email: str, app_password: str, server_host:str, server_port:str) -> smtplib.SMTP:
     '''
-    Создаем SMTP сервер и логинимся на нем
+    Создаем объект SMTP сервер и логинимся на нем
     '''
     try:
         if server_host and server_port:
